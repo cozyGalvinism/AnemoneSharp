@@ -7,8 +7,8 @@
     <ProjectGuid>{2D5C8802-5EF2-40A0-93D8-B2F8674BB317}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ClownfishAPI</RootNamespace>
-    <AssemblyName>ClownfishAPI</AssemblyName>
+    <RootNamespace>AnemoneSharp</RootNamespace>
+    <AssemblyName>AnemoneSharp</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
