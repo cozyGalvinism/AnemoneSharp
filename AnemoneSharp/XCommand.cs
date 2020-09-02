@@ -8,8 +8,12 @@ namespace ClownfishAPI
 {
     public enum XCommand
     {
-        Music = 0,
+        AudioFile = 0,
         TTS = 1,
-        ClownfishControl = 2
+        ClownfishControl = 2,
+        VoiceChanger = 3,
+        SoundFX = 4,
+        SoundVolume = 5,
+        VST = 6
     }
 }

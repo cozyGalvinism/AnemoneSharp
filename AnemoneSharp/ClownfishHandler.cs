@@ -17,17 +17,38 @@ namespace ClownfishAPI
 
         public void PlayFile(string path)
         {
-            SendCommand(XCommand.Music, path);
+            SendCommand(XCommand.AudioFile, path);
         }
 
         public void StopMusic()
         {
-            SendCommand(XCommand.Music, "");
+            SendCommand(XCommand.AudioFile, "");
         }
 
         public void SendTTS(string text)
         {
             SendCommand(XCommand.TTS, text);
+        }
+
+        public void ChangeVoice(int voice)
+        {
+            SendCommand(XCommand.VoiceChanger, voice.ToString());
+        }
+
+        public void SetEffect(int effect)
+        {
+            SendCommand(XCommand.SoundFX, effect.ToString());
+        }
+
+        public void SetVolume(int volume)
+        {
+            int finalVol = Math.Min(volume, 100);
+            SendCommand(XCommand.SoundVolume, finalVol.ToString());
+        }
+
+        public void EnableVST(string action)
+        {
+            SendCommand(XCommand.VST, action);
         }
 
         public void ControlClownfish(ClownfishStatus status)
@@ -37,7 +58,8 @@ namespace ClownfishAPI
 
         private void SendCommand(XCommand x, string y)
         {
-            string sendCommand = string.Format("{0}|{1}", (int)x, y);
+            string sendCommand = $"{(int) x}|{y}";
+            sendCommand = Encoding.UTF8.GetString(Encoding.Default.GetBytes(sendCommand));
             COPYDATASTRUCT cds = new COPYDATASTRUCT();
             cds.dwData = new IntPtr(42);
             cds.cbData = sendCommand.Length;
@@ -48,7 +70,7 @@ namespace ClownfishAPI
 
         private void SendCommand(XCommand x, ClownfishStatus y)
         {
-            string sendCommand = string.Format("{0}|{1}", (int)x, (int)y);
+            string sendCommand = $"{(int) x}|{(int) y}";
             COPYDATASTRUCT cds = new COPYDATASTRUCT();
             cds.dwData = new IntPtr(42);
             cds.cbData = sendCommand.Length;
