@@ -11,4 +11,10 @@ namespace ClownfishAPI
         TurnOff = 0,
         TurnOn = 1
     }
+
+    public enum MusicStatus
+    {
+        Pause = 0,
+        Resumte = 1
+    }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AnemoneSharp;
 
 namespace ClownfishAPI
 {
@@ -35,6 +36,11 @@ namespace ClownfishAPI
             SendCommand(XCommand.VoiceChanger, voice.ToString());
         }
 
+        public void ChangeVoiceCustomPitch(float pitch)
+        {
+            SendCommand(XCommand.VoiceChanger, 13, pitch.Clamp(-15f, 15f));
+        }
+
         public void SetEffect(int effect)
         {
             SendCommand(XCommand.SoundFX, effect.ToString());
@@ -53,28 +59,38 @@ namespace ClownfishAPI
 
         public void ControlClownfish(ClownfishStatus status)
         {
-            SendCommand(XCommand.ClownfishControl, status);
+            SendCommand(XCommand.ClownfishControl, (int)status);
         }
 
-        private void SendCommand(XCommand x, string y)
+        public void ControlMusic(MusicStatus status)
         {
-            string sendCommand = $"{(int) x}|{y}";
+            SendCommand(XCommand.MusicControl, (int)status);
+        }
+
+        private void SendCommand(XCommand x, params object[] args)
+        {
+            string commandArgs = string.Join("|", args.Select(arg => arg.ToString()));
+            string sendCommand = $"{(int) x}|{commandArgs}";
             sendCommand = Encoding.UTF8.GetString(Encoding.Default.GetBytes(sendCommand));
-            COPYDATASTRUCT cds = new COPYDATASTRUCT();
-            cds.dwData = new IntPtr(42);
-            cds.cbData = sendCommand.Length;
-            cds.lpData = sendCommand;
+            COPYDATASTRUCT cds = new COPYDATASTRUCT
+            {
+                dwData = new IntPtr(42), cbData = sendCommand.Length, lpData = sendCommand
+            };
 
             UnsafeMethods.SendMessage(new IntPtr(_clownfishWnd), WM_COPYDATA, IntPtr.Zero, ref cds);
         }
 
-        private void SendCommand(XCommand x, ClownfishStatus y)
+        private void SendCommand(int x, params object[] args)
         {
-            string sendCommand = $"{(int) x}|{(int) y}";
-            COPYDATASTRUCT cds = new COPYDATASTRUCT();
-            cds.dwData = new IntPtr(42);
-            cds.cbData = sendCommand.Length;
-            cds.lpData = sendCommand;
+            string commandArgs = string.Join("|", args.Select(arg => arg.ToString()));
+            string sendCommand = $"{x}|{commandArgs}";
+            sendCommand = Encoding.UTF8.GetString(Encoding.Default.GetBytes(sendCommand));
+            COPYDATASTRUCT cds = new COPYDATASTRUCT
+            {
+                dwData = new IntPtr(42),
+                cbData = sendCommand.Length,
+                lpData = sendCommand
+            };
 
             UnsafeMethods.SendMessage(new IntPtr(_clownfishWnd), WM_COPYDATA, IntPtr.Zero, ref cds);
         }

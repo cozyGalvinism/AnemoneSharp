@@ -14,6 +14,7 @@ namespace ClownfishAPI
         VoiceChanger = 3,
         SoundFX = 4,
         SoundVolume = 5,
-        VST = 6
+        VST = 6,
+        MusicControl = 7
     }
 }
